@@ -1,20 +1,20 @@
-package com.mozhimen.floatk.window.commons
+package com.mozhimen.floatk.window.global.commons
 
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.WindowManager.LayoutParams
+import com.mozhimen.floatk.window.commons.IFloatKWindowDragger
 import com.mozhimen.kotlin.elemk.commons.IExt_Listener
 import java.lang.ref.WeakReference
 
 /**
- * @ClassName IEasyFloat
+ * @ClassName IFloatKWindowGlobal
  * @Description TODO
- * @Author mozhimen
- * @Date 2024/9/11
+ * @Author Mozhimen / Kolin Zhao
+ * @Date 2024/10/13 19:42
  * @Version 1.0
  */
-interface IFloatKWindow<T> {
-    fun getWindowManagerRefs(): Map<String, WeakReference<WindowManager>>
+interface IFloatKWindowGlobal<T> {
+    fun isAttachedToWindowManager():Boolean
     fun setWindowParams(layoutParams: LayoutParams): T
     fun setWindowParams(block: IExt_Listener<WindowManager.LayoutParams>): T
     fun setDagger(dragger: IFloatKWindowDragger): T

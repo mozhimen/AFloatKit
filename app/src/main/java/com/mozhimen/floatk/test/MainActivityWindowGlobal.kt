@@ -2,10 +2,10 @@ package com.mozhimen.floatk.test
 
 import android.animation.ValueAnimator
 import android.app.Activity
-import android.graphics.RectF
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -29,14 +29,22 @@ import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.compositionContext
 import androidx.compose.ui.unit.dp
-import com.mozhimen.floatk.view.FloatKView
+import com.mozhimen.floatk.window.FloatKWindowProxy
+import com.mozhimen.floatk.window.global.FloatKWindowGlobal
+import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
+import com.mozhimen.kotlin.lintk.optins.permission.OPermission_SYSTEM_ALERT_WINDOW
 import com.mozhimen.kotlin.utilk.android.content.startContext
+import com.mozhimen.kotlin.utilk.android.util.UtilKLogWrapper
 import com.mozhimen.kotlin.utilk.android.util.dp2px
+import com.mozhimen.kotlin.utilk.android.util.dp2pxI
 import com.mozhimen.kotlin.utilk.android.widget.showToast
+import com.mozhimen.kotlin.utilk.commons.IUtilK
+import com.mozhimen.kotlin.utilk.wrapper.UtilKPermission
+import com.mozhimen.kotlin.utilk.wrapper.UtilKScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class MainActivityView : Activity() {
+class MainActivityWindowGlobal : Activity(), IUtilK {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,39 +53,38 @@ class MainActivityView : Activity() {
 
     ///////////////////////////////////////////////////////////////////////
 
+    @OptIn(OPermission_SYSTEM_ALERT_WINDOW::class)
     fun showSimple(view: View) {
-        if (FloatKView.instance.isRegisterActivityLifecycleCallbacks())
+        if (FloatKWindowGlobal.instance.isRegisterActivityLifecycleCallbacks()||!UtilKPermission.hasSystemAlertWindow())
             return
-        FloatKView.instance
+        FloatKWindowGlobal.instance
             .setCustomView(R.layout.layout_float_view)
             .addBlackList(mutableListOf(ThirdActivity::class.java))
             .setLayoutParams(getLayoutParamsDefault())
             .setDragEnable(true)
             .setAutoMoveToEdge(true)
             .show(this)
-        FloatKView.instance.getRoot()?.let {
+        FloatKWindowGlobal.instance.getRoot()?.let {
             initListener(it)
         }
     }
 
 
+    @OptIn(OApiInit_ByLazy::class)
     private fun getLayoutParamsDefault(): FrameLayout.LayoutParams {
-        val params = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.WRAP_CONTENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT
-        )
-        params.gravity = Gravity.TOP or Gravity.BOTTOM
+        val params = FloatKWindowProxy.getDefaultFrameLayoutLayoutParams()
 //        params.setMargins(params.leftMargin, 100.dp2pxI(), params.rightMargin, params.bottomMargin)//设置初始化位置(但是设置MATCH_PARENT不要通过这种方式, 会使全屏不完整)
-//        params.setMargins(0, params.topMargin, params.rightMargin, 500)
+        params.setMargins(0, params.topMargin, params.rightMargin, 500)
         return params
     }
 
     ///////////////////////////////////////////////////////////////////////
 
+    @OptIn(OPermission_SYSTEM_ALERT_WINDOW::class)
     fun showCompose(view: View) {
-        if (FloatKView.instance.isRegisterActivityLifecycleCallbacks())
+        if (FloatKWindowGlobal.instance.isRegisterActivityLifecycleCallbacks()||!UtilKPermission.hasSystemAlertWindow())
             return
-        FloatKView.instance
+        FloatKWindowGlobal.instance
             .setCustomView(
                 getComposeView()
             )
@@ -104,7 +111,7 @@ class MainActivityView : Activity() {
         coroutineScope.launch {
             reRecomposer.runRecomposeAndApplyChanges()
         }//如果使用compose, 一定要自己构建重组器, 不然reRecomposer detach from viewTree使点击事件无效
-        return ComposeView(this@MainActivityView).apply {
+        return ComposeView(this@MainActivityWindowGlobal).apply {
             compositionContext = reRecomposer
             setContent {
                 Box(
@@ -127,15 +134,19 @@ class MainActivityView : Activity() {
     ///////////////////////////////////////////////////////////////////////
 
     //高阶用法, 可以折叠展开成全屏的遮罩悬浮窗, 可设置初始位置
+    @OptIn(OPermission_SYSTEM_ALERT_WINDOW::class)
     fun showResizeFullScreen(view: View) {
-        if (FloatKView.instance.isRegisterActivityLifecycleCallbacks())
+        if (FloatKWindowGlobal.instance.isRegisterActivityLifecycleCallbacks()||!UtilKPermission.hasSystemAlertWindow())
             return
-        FloatKView.instance
+        FloatKWindowGlobal.instance
             .setCustomView(
                 getComposeView2()
             )
             .addBlackList(mutableListOf(ThirdActivity::class.java))
             .setLayoutParams(getLayoutParamsFullScreen())
+            .setWindowParams {
+                y = 50.dp2pxI()//或者通过setInitMargin
+            }
             .setDragEnable(true)
             .setAutoMoveToEdge(true)
             .show(this)
@@ -157,7 +168,7 @@ class MainActivityView : Activity() {
         coroutineScope.launch {
             reRecomposer.runRecomposeAndApplyChanges()
         }//如果使用compose, 一定要自己构建重组器, 不然reRecomposer detach from viewTree使点击事件无效
-        return ComposeView(this@MainActivityView).apply {
+        return ComposeView(this@MainActivityWindowGlobal).apply {
             compositionContext = reRecomposer
             setContent {
                 var isFold by remember {
@@ -218,7 +229,7 @@ class MainActivityView : Activity() {
     ///////////////////////////////////////////////////////////////////////
 
     fun dismiss(view: View) {
-        FloatKView.instance.dismiss(this)
+        FloatKWindowGlobal.instance.dismiss(this)
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -233,6 +244,9 @@ class MainActivityView : Activity() {
 
     fun startForth(view: View) {
         startContext<ForthActivity>()
+    }
+
+    fun getAllWindowManagers(view: View) {
     }
 
     ///////////////////////////////////////////////////////////////////////

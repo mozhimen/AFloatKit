@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LifecycleOwner
+import com.mozhimen.kotlin.elemk.commons.IExt_Listener
 
 /**
  * @ClassName IEasyFloat
@@ -42,9 +43,11 @@ interface IFloatK<T> {
 
     fun setLayoutParams(layoutParams: ViewGroup.LayoutParams): T
 
+    fun setLayoutParams(block: IExt_Listener<ViewGroup.LayoutParams>): T
+
     fun setDragEnable(dragEnable: Boolean): T
 
     fun setAutoMoveToEdge(autoMoveToEdge: Boolean): T
 
-    fun setInitMargin(margin: RectF): T
+//    fun setInitMargin(margin: RectF): T
 }

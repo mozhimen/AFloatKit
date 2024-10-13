@@ -15,8 +15,13 @@
         <activity android:name=".ForthActivity"></activity>
         <activity android:name=".ThirdActivity"></activity>
         <activity android:name=".SecondActivity" />
-        <activity android:name=".MainActivityView" android:exported="true"/>
+        <activity android:name=".MainActivityView" android:exported="true">
+
+        </activity>
         <activity android:name=".MainActivityWindow" android:exported="true">
+
+        </activity>
+        <activity android:name=".MainActivityWindowGlobal" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

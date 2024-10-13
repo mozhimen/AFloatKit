@@ -13,8 +13,6 @@ import com.mozhimen.kotlin.utilk.commons.IUtilK
  * @Version 1.0
  */
 interface IFloatKWindowDragger:IUtilK {
-    fun setDragEnable(enable: Boolean)
-    fun setAutoMoveToEdge(autoMoveToEdge: Boolean)
-    fun setInitMargin(margin: RectF)
+
     fun update(windowManager: WindowManager, view: View, layoutParams: WindowManager.LayoutParams)
 }

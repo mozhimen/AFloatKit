@@ -5,6 +5,8 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -32,12 +34,16 @@ import com.mozhimen.floatk.window.FloatKWindow
 import com.mozhimen.floatk.window.FloatKWindowProxy
 import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
 import com.mozhimen.kotlin.utilk.android.content.startContext
+import com.mozhimen.kotlin.utilk.android.util.UtilKLogWrapper
 import com.mozhimen.kotlin.utilk.android.util.dp2px
+import com.mozhimen.kotlin.utilk.android.util.dp2pxI
 import com.mozhimen.kotlin.utilk.android.widget.showToast
+import com.mozhimen.kotlin.utilk.commons.IUtilK
+import com.mozhimen.kotlin.utilk.wrapper.UtilKScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class MainActivityWindow : Activity() {
+class MainActivityWindow : Activity(), IUtilK {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,9 +140,11 @@ class MainActivityWindow : Activity() {
             )
             .addBlackList(mutableListOf(ThirdActivity::class.java))
             .setLayoutParams(getLayoutParamsFullScreen())
+            .setWindowParams {
+                y = 50.dp2pxI()//或者通过setInitMargin
+            }
             .setDragEnable(true)
             .setAutoMoveToEdge(true)
-//            .setInitMargin(RectF(0f, 100f.dp2px(), 0f, 0f))
             .show(this)
     }
 
@@ -173,6 +181,10 @@ class MainActivityWindow : Activity() {
                             text = "Unfold",
                             color = Color.White,
                             modifier = Modifier.clickable {
+                                FloatKWindow.instance.setLayoutParams {
+                                    width = ViewGroup.LayoutParams.WRAP_CONTENT
+                                    height = ViewGroup.LayoutParams.WRAP_CONTENT
+                                }
                                 isFold = false
                             }
                         )
@@ -197,6 +209,10 @@ class MainActivityWindow : Activity() {
                             color = Color.White,
                             modifier = Modifier
                                 .clickable {
+                                    FloatKWindow.instance.setLayoutParams {
+                                        width = UtilKScreen.getWidth()
+                                        height = UtilKScreen.getHeight()
+                                    }
                                     isFold = true
                                 }
                         )
@@ -234,6 +250,9 @@ class MainActivityWindow : Activity() {
         startContext<ForthActivity>()
     }
 
+    fun getAllWindowManagers(view: View) {
+        UtilKLogWrapper.d(TAG, "getAllWindowManagers: getWindowManagerRefs ${FloatKWindow.instance.getWindowManagerRefs().map { it.value.get() }}")
+    }
     ///////////////////////////////////////////////////////////////////////
 
     private fun initListener(root: View?) {

@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.mozhimen.floatk.basic.commons.IFloatK
 import com.mozhimen.floatk.basic.commons.IFloatKProxy
 import com.mozhimen.kotlin.elemk.android.app.bases.BaseActivityLifecycleCallbacks
+import com.mozhimen.kotlin.elemk.commons.IExt_Listener
 import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
 import com.mozhimen.kotlin.utilk.commons.IUtilK
 import java.util.concurrent.atomic.AtomicBoolean
@@ -23,64 +24,54 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @Version 1.0
  */
 abstract class BaseFloatK<T> : BaseActivityLifecycleCallbacks(), IFloatK<T>, IUtilK {
-    private val _blackList = mutableListOf<Class<*>>()
-    private val _isAdd = AtomicBoolean(false)
+    protected val _blackList = mutableListOf<Class<*>>()
+    protected val _isAdd = AtomicBoolean(false)
 
     ///////////////////////////////////////////////////////////////////////////////////
 
-    @OptIn(OApiInit_ByLazy::class)
     abstract fun getFloatKProxy(): IFloatKProxy
 
     ///////////////////////////////////////////////////////////////////////////////////
 
-    @OptIn(OApiInit_ByLazy::class)
     override fun getLifecycleOwner(): LifecycleOwner {
         return getFloatKProxy().getLifecycleOwner()
     }
 
-    @OptIn(OApiInit_ByLazy::class)
     override fun getRoot(): ViewGroup? {
         return getFloatKProxy().getRoot()
     }
 
-    @OptIn(OApiInit_ByLazy::class)
     override fun getLayoutId(): Int {
         return getFloatKProxy().getLayoutId()
     }
 
-    @OptIn(OApiInit_ByLazy::class)
     override fun getLayout(): View? {
         return getFloatKProxy().getLayout()
     }
 
-    @OptIn(OApiInit_ByLazy::class)
     override fun setCustomView(intLayoutId: Int): T {
         getFloatKProxy().setCustomView(intLayoutId)
         return this as T
     }
 
-    @OptIn(OApiInit_ByLazy::class)
     override fun setCustomView(view: View): T {
         getFloatKProxy().setCustomView(view)
         return this as T
     }
 
-    @OptIn(OApiInit_ByLazy::class)
     override fun setLayoutParams(layoutParams: ViewGroup.LayoutParams): T {
         getFloatKProxy().setLayoutParams(layoutParams)
         return this as T
     }
 
-    @OptIn(OApiInit_ByLazy::class)
-    override fun setInitMargin(margin: RectF): T {
-        getFloatKProxy().setInitMargin(margin)
+    override fun setLayoutParams(block: IExt_Listener<ViewGroup.LayoutParams>): T {
+        getFloatKProxy().setLayoutParams(block)
         return this as T
     }
 
     /**
      * 是否可拖拽（位置是否固定）
      */
-    @OptIn(OApiInit_ByLazy::class)
     override fun setDragEnable(dragEnable: Boolean): T {
         getFloatKProxy().setDragEnable(dragEnable)
         return this as T
@@ -89,31 +80,26 @@ abstract class BaseFloatK<T> : BaseActivityLifecycleCallbacks(), IFloatK<T>, IUt
     /**
      * 是否自动靠边
      */
-    @OptIn(OApiInit_ByLazy::class)
     override fun setAutoMoveToEdge(autoMoveToEdge: Boolean): T {
         getFloatKProxy().setAutoMoveToEdge(autoMoveToEdge)
         return this as T
     }
 
-    @OptIn(OApiInit_ByLazy::class)
     override fun add(context: Context): T {
         getFloatKProxy().add(context)
         return this as T
     }
 
-    @OptIn(OApiInit_ByLazy::class)
     override fun remove(): T {
         getFloatKProxy().remove()
         return this as T
     }
 
-    @OptIn(OApiInit_ByLazy::class)
     override fun attach(activity: Activity): T {
         getFloatKProxy().attach(activity)
         return this as T
     }
 
-    @OptIn(OApiInit_ByLazy::class)
     override fun detach(activity: Activity): T {
         getFloatKProxy().detach(activity)
         return this as T
@@ -138,13 +124,13 @@ abstract class BaseFloatK<T> : BaseActivityLifecycleCallbacks(), IFloatK<T>, IUt
         }
     }
 
-    fun show(activity: Activity) {
+    open fun show(activity: Activity) {
         Log.d(TAG, "show: activity $activity")
         attach(activity)
         registerActivityLifecycleCallbacks(activity.application)
     }
 
-    fun dismiss(activity: Activity) {
+    open fun dismiss(activity: Activity) {
         unregisterActivityLifecycleCallbacks(activity.application)
         detach(activity)
         remove()
@@ -169,7 +155,7 @@ abstract class BaseFloatK<T> : BaseActivityLifecycleCallbacks(), IFloatK<T>, IUt
 
     ///////////////////////////////////////////////////////////////////////////////////
 
-    private fun isActivityInValid(activity: Activity): Boolean {
+    protected fun isActivityInValid(activity: Activity): Boolean {
         return _blackList.contains(activity::class.java)
     }
 }

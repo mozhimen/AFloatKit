@@ -47,3 +47,4 @@ include ':ADslKit:dslk_anko'
 include ':AOpenGlKit'
 project(':AOpenGlKit').projectDir = new File("D:\\WorkSpace\\GitHub\\AOpenGlKit")
 include ':AOpenGlKit:openglk_basic'
+include ':floatk_window_global'

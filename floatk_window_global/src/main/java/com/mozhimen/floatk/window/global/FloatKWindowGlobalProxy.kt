@@ -1,4 +1,4 @@
-package com.mozhimen.floatk.window
+package com.mozhimen.floatk.window.global
 
 import android.app.Activity
 import android.content.Context
@@ -21,36 +21,36 @@ import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.mozhimen.floatk.basic.commons.IFloatKProxy
 import com.mozhimen.floatk.basic.helpers.FloatKOwnerProxy
-import com.mozhimen.floatk.window.commons.IFloatKWindow
 import com.mozhimen.floatk.window.commons.IFloatKWindowDragger
+import com.mozhimen.floatk.window.global.commons.IFloatKWindowGlobal
 import com.mozhimen.floatk.window.impls.FloatKWindowDaggerCommon
 import com.mozhimen.floatk.window.widgets.LayoutKFrameTouchWindow
+import com.mozhimen.kotlin.elemk.android.view.cons.CWinMgr
 import com.mozhimen.kotlin.elemk.commons.IExt_Listener
 import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
-import com.mozhimen.kotlin.utilk.android.app.getDecorView
+import com.mozhimen.kotlin.utilk.android.os.UtilKBuildVersion
 import com.mozhimen.kotlin.utilk.android.util.UtilKLogWrapper
-import com.mozhimen.kotlin.utilk.android.view.addAndRemoveOnGlobalLayoutListener
+import com.mozhimen.kotlin.utilk.android.view.UtilKWindowManager
 import com.mozhimen.kotlin.utilk.android.view.addViewSafe
 import com.mozhimen.kotlin.utilk.android.view.removeViewSafe
 import com.mozhimen.kotlin.utilk.bases.BaseUtilK
-import java.lang.ref.WeakReference
 import kotlin.properties.Delegates
 
 /**
- * @ClassName BaseEasyFloatProxy
+ * @ClassName FloatKWindowGlobalProxy
  * @Description TODO
- * @Author mozhimen
- * @Date 2024/10/12
+ * @Author Mozhimen / Kolin Zhao
+ * @Date 2024/10/13 19:42
  * @Version 1.0
  */
 @OApiInit_ByLazy
-class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
+class FloatKWindowGlobalProxy : IFloatKProxy, IFloatKWindowGlobal<Unit>, BaseUtilK(),
     LayoutKFrameTouchWindow.OnPositionChangedListener {
     @LayoutRes
     private var _layoutId = 0 //R.layout.en_floating_view;
     private var _layout: View? = null
-    private var _dragEnable:Boolean = true
-    private var _autoMoveToEdge:Boolean = true
+    private var _dragEnable: Boolean = true
+    private var _autoMoveToEdge: Boolean = true
     private var _layoutParams: ViewGroup.LayoutParams = getDefaultFrameLayoutLayoutParams()
     private var _windowParams: WindowManager.LayoutParams = getDefaultWindowManagerLayoutParams()
     private var _floatKWindowDragger: IFloatKWindowDragger? = null
@@ -59,9 +59,8 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
 
     ////////////////////////////////////////////////////////
 
-    private var _windowManagerRefs: HashMap<String, WeakReference<WindowManager>> = HashMap()
-    private var _currentClassName: String = ""
-    private var _windowParamsRef: WindowManager.LayoutParams? = null
+    private var _isAttachedToWindowManager = false
+    private val _windowManager: WindowManager by lazy { UtilKWindowManager.get(_context) }
     private var _layoutKRoot: LayoutKFrameTouchWindow? by Delegates.observable(null) { property, oldValue, newValue ->
         if (newValue != null) {
             _floatKOwnerProxy.onStart(NAME)
@@ -78,8 +77,8 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
 
     ////////////////////////////////////////////////////////
 
-    override fun getWindowManagerRefs(): Map<String, WeakReference<WindowManager>> {
-        return _windowManagerRefs
+    override fun isAttachedToWindowManager(): Boolean {
+        return _isAttachedToWindowManager
     }
 
     override fun getLifecycleOwner(): LifecycleOwner {
@@ -98,7 +97,7 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
         return _layoutKRoot
     }
 
-    //////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////
 
     override fun add(context: Context) {
         if (_layoutKRoot == null) {
@@ -109,7 +108,7 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
             }.apply {
                 setDragEnable(_dragEnable)
                 setAutoMoveToEdge(_autoMoveToEdge)
-                setOnPositionChangedListener(this@FloatKWindowProxy)
+                setOnPositionChangedListener(this@FloatKWindowGlobalProxy)
                 layoutParams = _layoutParams
                 if (findViewTreeLifecycleOwner() == null) {
                     setViewTreeLifecycleOwner(_floatKOwnerProxy)
@@ -127,49 +126,18 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
         }
     }
 
-    override fun remove() {
-        if (_layoutKRoot != null) {
-            _windowManagerRefs.filterValues { it.get() != null }.entries.forEach {
-                it.value.get()?.removeViewSafe(_layoutKRoot!!)
-            }
-            _windowManagerRefs.clear()
-            _layoutKRoot = null
-        }
-        _windowParamsRef = null
-        if (_currentClassName.isNotEmpty()) {
-            _currentClassName = ""
-        }
-    }
-
     override fun attach(activity: Activity) {
         if (_layoutKRoot == null) {
             Log.w(TAG, "attach: _layoutKRoot == null generate")
             add(_context)
         }
 
-        val windowManagerLast: WindowManager? = _windowManagerRefs[_currentClassName]?.get()
-        if (windowManagerLast != null) {
-            UtilKLogWrapper.d(TAG, "attach: removeViewSafe windowManager $windowManagerLast")
-            windowManagerLast.removeViewSafe(_layoutKRoot!!)
-            UtilKLogWrapper.d(TAG, "attach: removeViewSafe after _layoutKRoot.parent ${_layoutKRoot!!.parent}")
-        }
-
-        val windowManagerCurr: WindowManager = activity.windowManager
-        _currentClassName = activity.javaClass.name
-        UtilKLogWrapper.d(TAG, "attach: _currentClassName $_currentClassName")
-        if (!_windowManagerRefs.containsKey(_currentClassName)) {
-            _windowManagerRefs[_currentClassName] = WeakReference(windowManagerCurr)
-        }
-        UtilKLogWrapper.d(TAG, "attach: addViewSafe windowManager $windowManagerCurr activity $activity ")
-        activity.getDecorView<View>().addAndRemoveOnGlobalLayoutListener {
-            windowManagerCurr.addViewSafe(
-                _layoutKRoot!!,
-                WindowManager.LayoutParams().apply {
-                    generateWindowManagerParams(this)
-                }.also {
-                    _windowParamsRef = it
-                })
-        }
+        _windowManager.addViewSafe(
+            _layoutKRoot!!,
+            WindowManager.LayoutParams().apply {
+                generateWindowManagerParams(this)
+            })
+        _isAttachedToWindowManager = true
     }
 
     private fun generateWindowManagerParams(windowParams: WindowManager.LayoutParams) {
@@ -186,29 +154,15 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
     }
 
     override fun detach(activity: Activity) {
-        val className = activity.javaClass.name
-        val windowManagerLast = _windowManagerRefs[className]?.get()
-        if (_layoutKRoot != null && windowManagerLast != null) {
-            UtilKLogWrapper.w(TAG, "detach: removeViewSafe windowManager ${activity.windowManager} activity $activity ")
-            activity.windowManager.removeViewSafe(_layoutKRoot!!)
-            _windowManagerRefs.remove(className)
+        _windowManager.removeViewSafe(_layoutKRoot!!)
+        _isAttachedToWindowManager = false
+    }
+
+    override fun remove() {
+        if (_layoutKRoot != null) {
+            _windowManager.removeViewSafe(_layoutKRoot!!)
+            _layoutKRoot = null
         }
-        if (_windowParamsRef != null) {
-            _windowParams = _windowParamsRef!!
-        }
-//        //
-//        UtilKLogWrapper.w(TAG, "detach: _currentClassName $_currentClassName")
-//        val windowManagerCurr: WindowManager? = _windowManagerRefs[_currentClassName]?.get()
-//        if (windowManagerCurr!=null){
-//            UtilKLogWrapper.w(TAG, "detach: addViewSafe windowManager ${activity.windowManager}")
-//            windowManagerCurr.addViewSafe(
-//                _layoutKRoot!!,
-//                _windowParams/*activity.window.attributes*//*WindowManager.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)*//*.apply {
-//                generateWindowManagerParams(this)
-//            }*/.also {
-//                    _windowParamsRef = it
-//                })
-//        }
     }
 
     //////////////////////////////////////////////////
@@ -245,35 +199,26 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
     }
 
     override fun setWindowParams(block: IExt_Listener<WindowManager.LayoutParams>) {
-        _windowParams.block()
-        _windowParamsRef?.apply {
+        _windowParams.apply {
             block()
-            onPositionChanged(this.x.toFloat(),this.y.toFloat())
+            onPositionChanged(this.x.toFloat(), this.y.toFloat())
         }
     }
+
     override fun setWindowParams(layoutParams: WindowManager.LayoutParams) {
         _windowParams = layoutParams
-        _windowParamsRef = layoutParams
     }
 
     override fun setDagger(dragger: IFloatKWindowDragger) {
         _floatKWindowDragger = dragger
     }
 
-    ////////////////////////////////////////////////////////
-
     override fun onPositionChanged(x: Float, y: Float) {
-//        Log.d(
-//            TAG,
-//            "onPositionChanged: x y $x $y _floatKWindowDragger != null ${_floatKWindowDragger != null} _windowManagerRef?.get() != null ${
-//                _windowManagerRefs.get(_currentClassName)?.get() != null
-//            } _windowParamsRef != null ${_windowParamsRef != null}  _layoutKRoot != null ${_layoutKRoot != null}"
-//        )
-        if (_floatKWindowDragger != null && _windowManagerRefs.get(_currentClassName)?.get() != null && _windowParamsRef != null && _layoutKRoot != null) {
-            _windowParamsRef!!.x = x.toInt()
-            _windowParamsRef!!.y = y.toInt()
+        if (_floatKWindowDragger != null && _layoutKRoot != null) {
+            _windowParams.x = x.toInt()
+            _windowParams.y = y.toInt()
             UtilKLogWrapper.d(TAG, "onPositionChanged: x.toInt() $x y.toInt() $y")
-            _floatKWindowDragger?.update(_windowManagerRefs.get(_currentClassName)!!.get()!!, _layoutKRoot!!, _windowParamsRef!!)
+            _floatKWindowDragger?.update(_windowManager, _layoutKRoot!!, _windowParams)
         }
     }
 
@@ -290,7 +235,8 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
             val layoutParams = WindowManager.LayoutParams()
             layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
             layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_PANEL
+            layoutParams.type = if (UtilKBuildVersion.isAfterV_26_8_O())
+                CWinMgr.Lpt.APPLICATION_OVERLAY else CWinMgr.Lpt.TOAST
             // 设置触摸外层布局（除 WindowManager 外的布局，默认是 WindowManager 显示的时候外层不可触摸）
             // 需要注意的是设置了 FLAG_NOT_TOUCH_MODAL 必须要设置 FLAG_NOT_FOCUSABLE，否则就会导致用户按返回键无效
 //        layoutParams.flags = 263208

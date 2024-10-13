@@ -47,6 +47,7 @@ android {
 dependencies {
     implementation project(':floatk_view')
     implementation project(':floatk_window')
+    implementation project(':floatk_window_global')
 
     implementation project(':SwiftKit:composek')
     implementation project(':SwiftKit:bindk')

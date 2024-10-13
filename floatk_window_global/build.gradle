@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.mozhimen.floatk.window'
+    namespace 'com.mozhimen.floatk.window.global'
     compileSdk 34
 
     defaultConfig {
@@ -31,10 +31,12 @@ android {
 
 dependencies {
     implementation project(':KUtilKit:utilk_android')
-    implementation project(':AXmlKit:layoutk_magnet')
+    implementation project(':AXmlKit:basic')
     implementation project(project.path.replace(project.name,'')+':floatk_basic')
+    implementation project(project.path.replace(project.name,'')+':floatk_window')
+    implementation project(':AXmlKit:layoutk_magnet')
 
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
