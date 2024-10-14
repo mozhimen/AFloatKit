@@ -32,7 +32,7 @@ android {
 dependencies {
     implementation project(':KUtilKit:utilk_android')
     implementation project(':AXmlKit:layoutk_magnet')
-    implementation project(project.path.replace(project.name,'')+':floatk_basic')
+    api project(project.path.replace(project.name,'')+':floatk_basic')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
