@@ -28,6 +28,7 @@ import com.mozhimen.floatk.window.widgets.LayoutKFrameTouchWindow
 import com.mozhimen.kotlin.elemk.commons.IExt_Listener
 import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
 import com.mozhimen.kotlin.utilk.android.app.getDecorView
+import com.mozhimen.kotlin.utilk.android.app.isFinishingOrDestroyed
 import com.mozhimen.kotlin.utilk.android.util.UtilKLogWrapper
 import com.mozhimen.kotlin.utilk.android.view.addAndRemoveOnGlobalLayoutListener
 import com.mozhimen.kotlin.utilk.android.view.addViewSafe
@@ -49,8 +50,8 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
     @LayoutRes
     private var _layoutId = 0 //R.layout.en_floating_view;
     private var _layout: View? = null
-    private var _dragEnable:Boolean = true
-    private var _autoMoveToEdge:Boolean = true
+    private var _dragEnable: Boolean = true
+    private var _autoMoveToEdge: Boolean = true
     private var _layoutParams: ViewGroup.LayoutParams = getDefaultFrameLayoutLayoutParams()
     private var _windowParams: WindowManager.LayoutParams = getDefaultWindowManagerLayoutParams()
     private var _floatKWindowDragger: IFloatKWindowDragger? = null
@@ -162,13 +163,27 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
         }
         UtilKLogWrapper.d(TAG, "attach: addViewSafe windowManager $windowManagerCurr activity $activity ")
         activity.getDecorView<View>().addAndRemoveOnGlobalLayoutListener {
-            windowManagerCurr.addViewSafe(
+            var res = windowManagerCurr.addViewSafe(
                 _layoutKRoot!!,
                 WindowManager.LayoutParams().apply {
                     generateWindowManagerParams(this)
                 }.also {
                     _windowParamsRef = it
                 })
+//            if (!res) {
+//                _layoutKRoot!!.postDelayed({
+//                    if (_layoutKRoot!!.parent==null&&!activity.isFinishingOrDestroyed()){
+//                        res = windowManagerCurr.addViewSafe(
+//                            _layoutKRoot!!,
+//                            WindowManager.LayoutParams().apply {
+//                                generateWindowManagerParams(this)
+//                            }.also {
+//                                _windowParamsRef = it
+//                            })
+//                        Log.d(TAG, "attach: retry res $res")
+//                    }
+//                },1000)
+//            }
         }
     }
 
@@ -248,9 +263,10 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
         _windowParams.block()
         _windowParamsRef?.apply {
             block()
-            onPositionChanged(this.x.toFloat(),this.y.toFloat())
+            onPositionChanged(this.x.toFloat(), this.y.toFloat())
         }
     }
+
     override fun setWindowParams(layoutParams: WindowManager.LayoutParams) {
         _windowParams = layoutParams
         _windowParamsRef = layoutParams
