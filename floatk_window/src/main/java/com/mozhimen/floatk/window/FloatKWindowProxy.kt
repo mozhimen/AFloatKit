@@ -170,20 +170,20 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
                 }.also {
                     _windowParamsRef = it
                 })
-//            if (!res) {
-//                _layoutKRoot!!.postDelayed({
-//                    if (_layoutKRoot!!.parent==null&&!activity.isFinishingOrDestroyed()){
-//                        res = windowManagerCurr.addViewSafe(
-//                            _layoutKRoot!!,
-//                            WindowManager.LayoutParams().apply {
-//                                generateWindowManagerParams(this)
-//                            }.also {
-//                                _windowParamsRef = it
-//                            })
-//                        Log.d(TAG, "attach: retry res $res")
-//                    }
-//                },1000)
-//            }
+            if (!res) {
+                _layoutKRoot!!.postDelayed({
+                    if (_layoutKRoot!!.parent==null&&!activity.isFinishingOrDestroyed()){
+                        res = windowManagerCurr.addViewSafe(
+                            _layoutKRoot!!,
+                            WindowManager.LayoutParams().apply {
+                                generateWindowManagerParams(this)
+                            }.also {
+                                _windowParamsRef = it
+                            })
+                        Log.d(TAG, "attach: retry res $res")
+                    }
+                },1000)
+            }
         }
     }
 
