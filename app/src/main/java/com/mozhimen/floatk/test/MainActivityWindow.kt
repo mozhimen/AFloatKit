@@ -3,6 +3,7 @@ package com.mozhimen.floatk.test
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -251,7 +252,7 @@ class MainActivityWindow : Activity(), IUtilK {
     }
 
     fun getAllWindowManagers(view: View) {
-        UtilKLogWrapper.d(TAG, "getAllWindowManagers: getWindowManagerRefs ${FloatKWindow.instance.getWindowManagerRefs().map { it.value.get() }}")
+        Log.d(TAG, "getAllWindowManagers: getWindowManagerRefs ${FloatKWindow.instance.getWindowManagerRefs().map { it.value.get() }}")
     }
     ///////////////////////////////////////////////////////////////////////
 
