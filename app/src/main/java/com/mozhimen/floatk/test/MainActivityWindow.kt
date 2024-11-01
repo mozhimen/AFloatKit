@@ -1,13 +1,10 @@
 package com.mozhimen.floatk.test
 
 import android.animation.ValueAnimator
-import android.app.Activity
-import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -31,11 +28,12 @@ import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.compositionContext
 import androidx.compose.ui.unit.dp
+import com.mozhimen.bindk.bases.viewbinding.activity.BaseActivityVB
+import com.mozhimen.floatk.test.databinding.ActivityMainBinding
 import com.mozhimen.floatk.window.FloatKWindow
 import com.mozhimen.floatk.window.FloatKWindowProxy
 import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
 import com.mozhimen.kotlin.utilk.android.content.startContext
-import com.mozhimen.kotlin.utilk.android.util.UtilKLogWrapper
 import com.mozhimen.kotlin.utilk.android.util.dp2px
 import com.mozhimen.kotlin.utilk.android.util.dp2pxI
 import com.mozhimen.kotlin.utilk.android.widget.showToast
@@ -44,14 +42,7 @@ import com.mozhimen.kotlin.utilk.wrapper.UtilKScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class MainActivityWindow : Activity(), IUtilK {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-
-    ///////////////////////////////////////////////////////////////////////
+class MainActivityWindow : BaseActivityVB<ActivityMainBinding>(), IUtilK {
 
     fun showSimple(view: View) {
         if (FloatKWindow.instance.isRegisterActivityLifecycleCallbacks())
@@ -67,7 +58,6 @@ class MainActivityWindow : Activity(), IUtilK {
             initListener(it)
         }
     }
-
 
     @OptIn(OApiInit_ByLazy::class)
     private fun getLayoutParamsDefault(): FrameLayout.LayoutParams {
@@ -254,6 +244,7 @@ class MainActivityWindow : Activity(), IUtilK {
     fun getAllWindowManagers(view: View) {
         Log.d(TAG, "getAllWindowManagers: getWindowManagerRefs ${FloatKWindow.instance.getWindowManagerRefs().map { it.value.get() }}")
     }
+
     ///////////////////////////////////////////////////////////////////////
 
     private fun initListener(root: View?) {

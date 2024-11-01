@@ -162,27 +162,29 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
             _windowManagerRefs[_currentClassName] = WeakReference(windowManagerCurr)
         }
         UtilKLogWrapper.d(TAG, "attach: addViewSafe windowManager $windowManagerCurr activity $activity ")
-        activity.getDecorView<View>().addAndRemoveOnGlobalLayoutListener {
-            var res = windowManagerCurr.addViewSafe(
-                _layoutKRoot!!,
-                WindowManager.LayoutParams().apply {
-                    generateWindowManagerParams(this)
-                }.also {
-                    _windowParamsRef = it
-                })
-            if (!res) {
-                _layoutKRoot!!.postDelayed({
-                    if (_layoutKRoot!!.parent==null&&!activity.isFinishingOrDestroyed()){
-                        res = windowManagerCurr.addViewSafe(
-                            _layoutKRoot!!,
-                            WindowManager.LayoutParams().apply {
-                                generateWindowManagerParams(this)
-                            }.also {
-                                _windowParamsRef = it
-                            })
-                        Log.d(TAG, "attach: retry res $res")
-                    }
-                },1000)
+        activity.getDecorView<View>().post {
+            activity.getDecorView<View>().addAndRemoveOnGlobalLayoutListener {
+                var res = windowManagerCurr.addViewSafe(
+                    _layoutKRoot!!,
+                    WindowManager.LayoutParams().apply {
+                        generateWindowManagerParams(this)
+                    }.also {
+                        _windowParamsRef = it
+                    })
+                if (!res) {
+                    _layoutKRoot!!.postDelayed({
+                        if (_layoutKRoot!!.parent == null && !activity.isFinishingOrDestroyed()) {
+                            res = windowManagerCurr.addViewSafe(
+                                _layoutKRoot!!,
+                                WindowManager.LayoutParams().apply {
+                                    generateWindowManagerParams(this)
+                                }.also {
+                                    _windowParamsRef = it
+                                })
+                            Log.d(TAG, "attach: retry res $res")
+                        }
+                    }, 1000)
+                }
             }
         }
     }
