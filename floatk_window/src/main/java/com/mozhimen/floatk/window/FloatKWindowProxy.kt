@@ -164,6 +164,7 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
         UtilKLogWrapper.d(TAG, "attach: addViewSafe windowManager $windowManagerCurr activity $activity ")
         activity.getDecorView<View>().post {
             activity.getDecorView<View>().addAndRemoveOnGlobalLayoutListener {
+                windowManagerCurr.removeViewSafe(_layoutKRoot!!)
                 var res = windowManagerCurr.addViewSafe(
                     _layoutKRoot!!,
                     WindowManager.LayoutParams().apply {
@@ -172,7 +173,7 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
                         _windowParamsRef = it
                     })
                 if (!res) {
-                    _layoutKRoot!!.postDelayed({
+                    activity.getDecorView<View>().postDelayed({
                         if (_layoutKRoot!!.parent == null && !activity.isFinishingOrDestroyed()) {
                             res = windowManagerCurr.addViewSafe(
                                 _layoutKRoot!!,
