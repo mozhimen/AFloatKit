@@ -18,22 +18,38 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "AFloatKit"
-include ':floatk_view'
+include ':view'
 include ':app'
 include ':floatk_view'
-include ':floatk_basic'
-include ':floatk_window'
+include ':basic'
+include ':window'
+include ':window_global'
+//ALibKit_Google
+include ':ALibKit_Google'
+project(':ALibKit_Google').projectDir = new File("D:\\WorkSpace\\GitHub\\ALibKit_Google")
+include ':ALibKit_Google:material'
+//ALibKit_Jetpack
+include ':ALibKit_Jetpack'
+project(':ALibKit_Jetpack').projectDir = new File("D:\\WorkSpace\\GitHub\\ALibKit_Jetpack")
+include ':ALibKit_Jetpack:databinding'
+include ':ALibKit_Jetpack:core'
+include ':ALibKit_Jetpack:annotation'
+//ALibKit_Jetbrains
+include ':ALibKit_Jetbrains'
+project(':ALibKit_Jetbrains').projectDir = new File("D:\\WorkSpace\\GitHub\\ALibKit_Jetbrains")
+include ':ALibKit_Jetbrains:kotlin_stdlib'
+include ':ALibKit_Jetbrains:kotlinx_coroutines'
 //KUtilKit
 include ':KUtilKit'
 project(':KUtilKit').projectDir = new File("D:\\WorkSpace\\GitHub\\KUtilKit")
-include ':KUtilKit:utilk_android'
-include ':KUtilKit:utilk_kotlin'
-//SwiftKit
-include ':SwiftKit'
-project(':SwiftKit').projectDir = new File("D:\\WorkSpace\\GitHub\\SwiftKit")
-include ':SwiftKit:basick'
-include ':SwiftKit:composek'
-include ':SwiftKit:bindk'
+include ':KUtilKit:android'
+include ':KUtilKit:kotlin'
+//ASwiftKit
+include ':ASwiftKit'
+project(':ASwiftKit').projectDir = new File("D:\\WorkSpace\\GitHub\\ASwiftKit")
+include ':ASwiftKit:basick'
+include ':ASwiftKit:composek'
+include ':ASwiftKit:bindk'
 //AXmlKit
 include ':AXmlKit'
 project(':AXmlKit').projectDir = new File("D:\\WorkSpace\\GitHub\\AXmlKit")
@@ -42,9 +58,8 @@ include ':AXmlKit:basic'
 //ADslKit
 include ':ADslKit'
 project(':ADslKit').projectDir = new File("D:\\WorkSpace\\GitHub\\ADslKit")
-include ':ADslKit:dslk_anko'
+include ':ADslKit:anko'
 //AOpenGlKit
 include ':AOpenGlKit'
 project(':AOpenGlKit').projectDir = new File("D:\\WorkSpace\\GitHub\\AOpenGlKit")
-include ':AOpenGlKit:openglk_basic'
-include ':floatk_window_global'
+include ':AOpenGlKit:basic'

@@ -58,14 +58,14 @@ android {
 }
 
 dependencies {
-    implementation project(':floatk_view')
-    implementation project(':floatk_window')
-    implementation project(':floatk_window_global')
+    implementation project(':view')
+    implementation project(':window')
+    implementation project(':window_global')
 
-    implementation project(':SwiftKit:composek')
-    implementation project(':SwiftKit:bindk')
-    implementation project(':ADslKit:dslk_anko')
-    implementation project(':AOpenGlKit:openglk_basic')
+    implementation project(':ASwiftKit:composek')
+    implementation project(':ASwiftKit:bindk')
+    implementation project(':ADslKit:anko')
+    implementation project(':AOpenGlKit:basic')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
