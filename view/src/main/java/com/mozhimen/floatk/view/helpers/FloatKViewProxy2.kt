@@ -1,11 +1,14 @@
-package com.mozhimen.floatk.view
+package com.mozhimen.floatk.view.helpers
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.RectF
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.activity.findViewTreeOnBackPressedDispatcherOwner
@@ -23,11 +26,13 @@ import com.mozhimen.floatk.basic.helpers.FloatKOwnerProxy
 import com.mozhimen.floatk.view.commons.IFloatKView
 import com.mozhimen.kotlin.elemk.commons.IExt_Listener
 import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
+import com.mozhimen.kotlin.utilk.BuildConfig
 import com.mozhimen.kotlin.utilk.android.app.getContentView
 import com.mozhimen.kotlin.utilk.android.view.addAndRemoveOnGlobalLayoutListener
 import com.mozhimen.kotlin.utilk.android.view.addViewSafe
 import com.mozhimen.kotlin.utilk.android.view.removeViewSafe
 import com.mozhimen.kotlin.utilk.android.view.removeView_ofParent
+import com.mozhimen.xmlk.basic.widgets.LayoutKFrame
 import com.mozhimen.xmlk.layoutk.magnet.LayoutKMagnet
 import kotlin.properties.Delegates
 
@@ -39,7 +44,7 @@ import kotlin.properties.Delegates
  * @Version 1.0
  */
 @OApiInit_ByLazy
-class FloatKViewProxy : IFloatKProxy, IFloatKView<Unit> {
+class FloatKViewProxy2 : IFloatKProxy, IFloatKView<Unit> {
     @LayoutRes
     private var _layoutId = 0 //R.layout.en_floating_view;
     private var _layout: View? = null
@@ -51,6 +56,7 @@ class FloatKViewProxy : IFloatKProxy, IFloatKView<Unit> {
 
     ////////////////////////////////////////////////////////
 
+    protected var _layoutKMagnetContainer: LayoutKFrame? = null
     protected var _layoutKMagnet: LayoutKMagnet? by Delegates.observable(null) { property, oldValue, newValue ->
         if (newValue != null) {
             _floatKOwnerProxy.onStart(NAME)
@@ -108,11 +114,32 @@ class FloatKViewProxy : IFloatKProxy, IFloatKView<Unit> {
                 setViewTreeOnBackPressedDispatcherOwner(_floatKOwnerProxy)
             }
         }
+        if (isLayoutParamsMatchParent()) {
+            _layoutKMagnetContainer = LayoutKFrame(
+                context, _layoutKMagnet!!,
+                FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT).apply {
+                    if (_layoutParams is MarginLayoutParams)
+                        setMargins(
+                            (_layoutParams as MarginLayoutParams).leftMargin,
+                            (_layoutParams as MarginLayoutParams).topMargin,
+                            (_layoutParams as MarginLayoutParams).rightMargin,
+                            (_layoutParams as MarginLayoutParams).bottomMargin
+                        )
+                }
+            ).apply {
+                if (BuildConfig.DEBUG)
+                    setBackgroundColor(0x80000000.toInt())
+                else
+                    setBackgroundColor(0x03000000)
+            }
+        }
     }
 
     override fun remove() {
         _layoutKMagnet?.removeView_ofParent()
         _layoutKMagnet = null
+        _layoutKMagnetContainer?.removeView_ofParent()
+        _layoutKMagnetContainer = null
     }
 
     override fun attach(activity: Activity) {
@@ -129,11 +156,18 @@ class FloatKViewProxy : IFloatKProxy, IFloatKView<Unit> {
             add(container.context)
         }
         Log.d(TAG, "attach: ")
-        container.addViewSafe(_layoutKMagnet!!)
-        _layoutKMagnet!!.addAndRemoveOnGlobalLayoutListener {
-            _layoutKMagnet!!.bringToFront()
-            _layoutKMagnet!!.updateSize()
-            _layoutKMagnet!!.moveToEdge()
+        if (_layoutKMagnetContainer != null) {
+            Log.d(TAG, "attach: _layoutKMagnetContainer")
+            container.addViewSafe(_layoutKMagnetContainer!!, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            _layoutKMagnetContainer!!.bringToFront()
+        } else {
+            Log.d(TAG, "attach: _layoutKMagnet")
+            container.addViewSafe(_layoutKMagnet!!)
+            _layoutKMagnet!!.addAndRemoveOnGlobalLayoutListener {
+                _layoutKMagnet!!.bringToFront()
+                _layoutKMagnet!!.updateSize()
+                _layoutKMagnet!!.moveToEdge()
+            }
         }
     }
 
@@ -143,7 +177,10 @@ class FloatKViewProxy : IFloatKProxy, IFloatKView<Unit> {
     }
 
     override fun detach(container: FrameLayout?) {
-        if (_layoutKMagnet != null && container != null) {
+        if (_layoutKMagnetContainer != null && container != null) {
+            Log.d(TAG, "detach: _layoutKMagnetContainer")
+            container.removeViewSafe(_layoutKMagnetContainer!!)
+        } else if (_layoutKMagnet != null && container != null) {
             Log.d(TAG, "detach: _layoutKMagnet")
             container.removeViewSafe(_layoutKMagnet!!)
         }
@@ -161,7 +198,10 @@ class FloatKViewProxy : IFloatKProxy, IFloatKView<Unit> {
 
     override fun setLayoutParams(layoutParams: ViewGroup.LayoutParams) {
         _layoutParams = layoutParams
-        _layoutKMagnet?.layoutParams = layoutParams
+        if (_layoutKMagnetContainer != null) {
+            _layoutKMagnetContainer?.layoutParams = layoutParams
+        } else
+            _layoutKMagnet?.layoutParams = layoutParams
     }
 
     override fun setDragEnable(dragEnable: Boolean) {
@@ -174,18 +214,25 @@ class FloatKViewProxy : IFloatKProxy, IFloatKView<Unit> {
         _layoutKMagnet?.setAutoMoveToEdge(autoMoveToEdge)
     }
 
-    override fun setLayoutParams(block: IExt_Listener<ViewGroup.LayoutParams>) {
+    override fun setLayoutParams(block: IExt_Listener<LayoutParams>) {
         _layoutParams.block()
         setLayoutParams(_layoutParams)
     }
 
+//    override fun setInitMargin(margin: RectF) {
+//        _initMargin = margin
+//        _layoutKMagnet?.setInitMargin(margin)
+//    }
+
     ////////////////////////////////////////////////////////
 
-    companion object {
-        fun getDefaultLayoutParams(): FrameLayout.LayoutParams {
-            val layoutParams = FrameLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-            layoutParams.gravity = Gravity.TOP or Gravity.START
-            return layoutParams
-        }
+    private fun getDefaultLayoutParams(): FrameLayout.LayoutParams {
+        val layoutParams = FrameLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        layoutParams.gravity = Gravity.BOTTOM or Gravity.START
+        layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin, layoutParams.rightMargin, layoutParams.bottomMargin)
+        return layoutParams
     }
+
+    private fun isLayoutParamsMatchParent(): Boolean =
+        _layoutParams.width == LayoutParams.MATCH_PARENT && _layoutParams.height == LayoutParams.MATCH_PARENT
 }

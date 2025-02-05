@@ -35,7 +35,7 @@ dependencies {
     implementation project(':AXmlKit:basic')
     implementation project(project.path.replace(project.name,'')+':basic')
     implementation project(project.path.replace(project.name,'')+':window')
-    implementation project(':AXmlKit:layoutk_magnet')
+    implementation project(':AXmlKit:layoutk:magnet')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

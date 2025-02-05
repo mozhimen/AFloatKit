@@ -4,10 +4,11 @@ import android.annotation.SuppressLint
 import android.widget.FrameLayout
 import com.mozhimen.floatk.basic.bases.BaseFloatK
 import com.mozhimen.floatk.view.commons.IFloatKView
+import com.mozhimen.floatk.view.helpers.FloatKViewProxy
 import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
 
 @SuppressLint("StaticFieldLeak")
-class FloatKView : BaseFloatK<FloatKView>(),IFloatKView<FloatKView> {
+class FloatKView : BaseFloatK<FloatKView>(), IFloatKView<FloatKView> {
     companion object {
         @JvmStatic
         val instance = INSTANCE.holder

@@ -30,9 +30,13 @@ android {
 }
 
 dependencies {
-    implementation project(':KUtilKit:android')
-    api project(':AXmlKit:layoutk_magnet')
-    api project(':basic')
+    implementation project(':ASwiftKit:basick')
+    api project(':AXmlKit:layoutk:magnet')
+    if (rootProject.name=="AFloatKit"){
+        api project(':basic')
+    }else{
+        api project(':AFloatKit:basic')
+    }
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

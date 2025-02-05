@@ -48,12 +48,13 @@ include ':KUtilKit:kotlin'
 include ':ASwiftKit'
 project(':ASwiftKit').projectDir = new File("D:\\WorkSpace\\GitHub\\ASwiftKit")
 include ':ASwiftKit:basick'
+include ':ASwiftKit:xmlk'
 include ':ASwiftKit:composek'
-include ':ASwiftKit:bindk'
+include ':ASwiftKit:uik:databinding'
 //AXmlKit
 include ':AXmlKit'
 project(':AXmlKit').projectDir = new File("D:\\WorkSpace\\GitHub\\AXmlKit")
-include ':AXmlKit:layoutk_magnet'
+include ':AXmlKit:layoutk:magnet'
 include ':AXmlKit:basic'
 //ADslKit
 include ':ADslKit'

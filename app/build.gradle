@@ -63,7 +63,7 @@ dependencies {
     implementation project(':window_global')
 
     implementation project(':ASwiftKit:composek')
-    implementation project(':ASwiftKit:bindk')
+    implementation project(':ASwiftKit:uik:databinding')
     implementation project(':ADslKit:anko')
     implementation project(':AOpenGlKit:basic')
 
