@@ -2,7 +2,6 @@ package com.mozhimen.floatk.view.helpers
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.RectF
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -21,7 +20,7 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import com.mozhimen.floatk.basic.commons.IFloatKProxy
+import com.mozhimen.floatk.basic.commons.IFloatKDelegate
 import com.mozhimen.floatk.basic.helpers.FloatKOwnerProxy
 import com.mozhimen.floatk.view.commons.IFloatKView
 import com.mozhimen.kotlin.elemk.commons.IExt_Listener
@@ -44,7 +43,7 @@ import kotlin.properties.Delegates
  * @Version 1.0
  */
 @OApiInit_ByLazy
-class FloatKViewProxy2 : IFloatKProxy, IFloatKView<Unit> {
+class FloatKViewDelegate2 : IFloatKDelegate, IFloatKView<Unit> {
     @LayoutRes
     private var _layoutId = 0 //R.layout.en_floating_view;
     private var _layout: View? = null

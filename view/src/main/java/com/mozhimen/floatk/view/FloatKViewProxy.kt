@@ -20,7 +20,7 @@ import com.mozhimen.kotlin.utilk.android.util.UtilKLogWrapper
 @OApiCall_BindViewLifecycle
 @OApiInit_ByLazy
 @OApiCall_BindLifecycle
-class FloatKViewLifecycleProxy(private var _activity: Activity?) : BaseWakeBefDestroyLifecycleObserver() {
+class FloatKViewProxy(private var _activity: Activity?) : BaseWakeBefDestroyLifecycleObserver() {
 
     private val _floatKView: FloatKView by lazy { FloatKView.instance }
 

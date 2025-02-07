@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.mozhimen.bindk.bases.viewbinding.activity.BaseActivityVB
 import com.mozhimen.floatk.test.databinding.ActivityMainBinding
 import com.mozhimen.floatk.window.FloatKWindow
-import com.mozhimen.floatk.window.FloatKWindowProxy
+import com.mozhimen.floatk.window.FloatKWindowDelegate
 import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
 import com.mozhimen.kotlin.utilk.android.content.startContext
 import com.mozhimen.kotlin.utilk.android.util.dp2px
@@ -61,7 +61,7 @@ class MainActivityWindow : BaseActivityVB<ActivityMainBinding>(), IUtilK {
 
     @OptIn(OApiInit_ByLazy::class)
     private fun getLayoutParamsDefault(): FrameLayout.LayoutParams {
-        val params = FloatKWindowProxy.getDefaultFrameLayoutLayoutParams()
+        val params = FloatKWindowDelegate.getDefaultFrameLayoutLayoutParams()
 //        params.setMargins(params.leftMargin, 100.dp2pxI(), params.rightMargin, params.bottomMargin)//设置初始化位置(但是设置MATCH_PARENT不要通过这种方式, 会使全屏不完整)
         params.setMargins(0, params.topMargin, params.rightMargin, 500)
         return params

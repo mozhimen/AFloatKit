@@ -2,7 +2,6 @@ package com.mozhimen.floatk.window
 
 import android.app.Activity
 import android.util.Log
-import android.view.ViewGroup
 import android.view.WindowManager
 import com.mozhimen.floatk.basic.bases.BaseFloatK
 import com.mozhimen.floatk.window.commons.IFloatKWindow
@@ -31,7 +30,7 @@ class FloatKWindow : BaseFloatK<FloatKWindow>(), IFloatKWindow<FloatKWindow> {
     ///////////////////////////////////////////////////////////////////////////////////
 
     @OptIn(OApiInit_ByLazy::class)
-    private val _floatProxy by lazy { FloatKWindowProxy() }
+    private val _floatProxy by lazy { FloatKWindowDelegate() }
 
     ///////////////////////////////////////////////////////////////////////////////////
 
@@ -41,7 +40,7 @@ class FloatKWindow : BaseFloatK<FloatKWindow>(), IFloatKWindow<FloatKWindow> {
     }
 
     @OptIn(OApiInit_ByLazy::class)
-    override fun getFloatKProxy(): FloatKWindowProxy {
+    override fun getFloatKProxy(): FloatKWindowDelegate {
         return _floatProxy
     }
 

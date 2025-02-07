@@ -1,4 +1,4 @@
-package com.mozhimen.floatk.window
+package com.mozhimen.floatk.window.helpers
 
 import android.app.Activity
 import android.content.Context
@@ -19,7 +19,7 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import com.mozhimen.floatk.basic.commons.IFloatKProxy
+import com.mozhimen.floatk.basic.commons.IFloatKDelegate
 import com.mozhimen.floatk.basic.helpers.FloatKOwnerProxy
 import com.mozhimen.floatk.window.commons.IFloatKWindow
 import com.mozhimen.floatk.window.commons.IFloatKWindowDragger
@@ -45,7 +45,7 @@ import kotlin.properties.Delegates
  * @Version 1.0
  */
 @OApiInit_ByLazy
-class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
+class FloatKWindowDelegate : IFloatKDelegate, IFloatKWindow<Unit>, BaseUtilK(),
     LayoutKFrameTouchWindow.OnPositionChangedListener {
     @LayoutRes
     private var _layoutId = 0 //R.layout.en_floating_view;
@@ -110,7 +110,7 @@ class FloatKWindowProxy : IFloatKProxy, IFloatKWindow<Unit>, BaseUtilK(),
             }.apply {
                 setDragEnable(_dragEnable)
                 setAutoMoveToEdge(_autoMoveToEdge)
-                setOnPositionChangedListener(this@FloatKWindowProxy)
+                setOnPositionChangedListener(this@FloatKWindowDelegate)
                 layoutParams = _layoutParams
                 if (findViewTreeLifecycleOwner() == null) {
                     setViewTreeLifecycleOwner(_floatKOwnerProxy)

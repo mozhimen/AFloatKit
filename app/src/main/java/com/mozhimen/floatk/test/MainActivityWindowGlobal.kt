@@ -5,7 +5,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -29,18 +28,16 @@ import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.compositionContext
 import androidx.compose.ui.unit.dp
-import com.mozhimen.floatk.window.FloatKWindowProxy
+import com.mozhimen.floatk.window.FloatKWindowDelegate
 import com.mozhimen.floatk.window.global.FloatKWindowGlobal
 import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
 import com.mozhimen.kotlin.lintk.optins.permission.OPermission_SYSTEM_ALERT_WINDOW
 import com.mozhimen.kotlin.utilk.android.content.startContext
-import com.mozhimen.kotlin.utilk.android.util.UtilKLogWrapper
 import com.mozhimen.kotlin.utilk.android.util.dp2px
 import com.mozhimen.kotlin.utilk.android.util.dp2pxI
 import com.mozhimen.kotlin.utilk.android.widget.showToast
 import com.mozhimen.kotlin.utilk.commons.IUtilK
 import com.mozhimen.kotlin.utilk.wrapper.UtilKPermission
-import com.mozhimen.kotlin.utilk.wrapper.UtilKScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -72,7 +69,7 @@ class MainActivityWindowGlobal : Activity(), IUtilK {
 
     @OptIn(OApiInit_ByLazy::class)
     private fun getLayoutParamsDefault(): FrameLayout.LayoutParams {
-        val params = FloatKWindowProxy.getDefaultFrameLayoutLayoutParams()
+        val params = FloatKWindowDelegate.getDefaultFrameLayoutLayoutParams()
 //        params.setMargins(params.leftMargin, 100.dp2pxI(), params.rightMargin, params.bottomMargin)//设置初始化位置(但是设置MATCH_PARENT不要通过这种方式, 会使全屏不完整)
         params.setMargins(0, params.topMargin, params.rightMargin, 500)
         return params

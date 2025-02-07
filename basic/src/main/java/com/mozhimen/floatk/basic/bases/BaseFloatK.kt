@@ -3,16 +3,14 @@ package com.mozhimen.floatk.basic.bases
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.graphics.RectF
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import com.mozhimen.floatk.basic.commons.IFloatK
-import com.mozhimen.floatk.basic.commons.IFloatKProxy
+import com.mozhimen.floatk.basic.commons.IFloatKDelegate
 import com.mozhimen.kotlin.elemk.android.app.bases.BaseActivityLifecycleCallbacks
 import com.mozhimen.kotlin.elemk.commons.IExt_Listener
-import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
 import com.mozhimen.kotlin.utilk.commons.IUtilK
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -29,43 +27,43 @@ abstract class BaseFloatK<T> : BaseActivityLifecycleCallbacks(), IFloatK<T>, IUt
 
     ///////////////////////////////////////////////////////////////////////////////////
 
-    abstract fun getFloatKProxy(): IFloatKProxy
+    abstract fun getFloatKDelegate(): IFloatKDelegate
 
     ///////////////////////////////////////////////////////////////////////////////////
 
     override fun getLifecycleOwner(): LifecycleOwner {
-        return getFloatKProxy().getLifecycleOwner()
+        return getFloatKDelegate().getLifecycleOwner()
     }
 
     override fun getRoot(): ViewGroup? {
-        return getFloatKProxy().getRoot()
+        return getFloatKDelegate().getRoot()
     }
 
     override fun getLayoutId(): Int {
-        return getFloatKProxy().getLayoutId()
+        return getFloatKDelegate().getLayoutId()
     }
 
     override fun getLayout(): View? {
-        return getFloatKProxy().getLayout()
+        return getFloatKDelegate().getLayout()
     }
 
     override fun setCustomView(intLayoutId: Int): T {
-        getFloatKProxy().setCustomView(intLayoutId)
+        getFloatKDelegate().setCustomView(intLayoutId)
         return this as T
     }
 
     override fun setCustomView(view: View): T {
-        getFloatKProxy().setCustomView(view)
+        getFloatKDelegate().setCustomView(view)
         return this as T
     }
 
     override fun setLayoutParams(layoutParams: ViewGroup.LayoutParams): T {
-        getFloatKProxy().setLayoutParams(layoutParams)
+        getFloatKDelegate().setLayoutParams(layoutParams)
         return this as T
     }
 
     override fun setLayoutParams(block: IExt_Listener<ViewGroup.LayoutParams>): T {
-        getFloatKProxy().setLayoutParams(block)
+        getFloatKDelegate().setLayoutParams(block)
         return this as T
     }
 
@@ -73,7 +71,7 @@ abstract class BaseFloatK<T> : BaseActivityLifecycleCallbacks(), IFloatK<T>, IUt
      * 是否可拖拽（位置是否固定）
      */
     override fun setDragEnable(dragEnable: Boolean): T {
-        getFloatKProxy().setDragEnable(dragEnable)
+        getFloatKDelegate().setDragEnable(dragEnable)
         return this as T
     }
 
@@ -81,27 +79,27 @@ abstract class BaseFloatK<T> : BaseActivityLifecycleCallbacks(), IFloatK<T>, IUt
      * 是否自动靠边
      */
     override fun setAutoMoveToEdge(autoMoveToEdge: Boolean): T {
-        getFloatKProxy().setAutoMoveToEdge(autoMoveToEdge)
+        getFloatKDelegate().setAutoMoveToEdge(autoMoveToEdge)
         return this as T
     }
 
     override fun add(context: Context): T {
-        getFloatKProxy().add(context)
+        getFloatKDelegate().add(context)
         return this as T
     }
 
     override fun remove(): T {
-        getFloatKProxy().remove()
+        getFloatKDelegate().remove()
         return this as T
     }
 
     override fun attach(activity: Activity): T {
-        getFloatKProxy().attach(activity)
+        getFloatKDelegate().attach(activity)
         return this as T
     }
 
     override fun detach(activity: Activity): T {
-        getFloatKProxy().detach(activity)
+        getFloatKDelegate().detach(activity)
         return this as T
     }
 
