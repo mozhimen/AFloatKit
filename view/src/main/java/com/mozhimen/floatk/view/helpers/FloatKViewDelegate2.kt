@@ -58,9 +58,9 @@ class FloatKViewDelegate2 : IFloatKDelegate, IFloatKView<Unit> {
     protected var _layoutKMagnetContainer: LayoutKFrame? = null
     protected var _layoutKMagnet: LayoutKMagnet? by Delegates.observable(null) { property, oldValue, newValue ->
         if (newValue != null) {
-            _floatKOwnerProxy.onStart(NAME)
+            _floatKOwnerProxy.onStart()
         } else {
-            _floatKOwnerProxy.onStop(NAME)
+            _floatKOwnerProxy.onStop()
         }
     }
 

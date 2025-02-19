@@ -69,14 +69,14 @@ class FloatKOwnerProxy : SavedStateRegistryOwner, LifecycleOwnerProxy(), ViewMod
 
     //////////////////////////////////////////////////////////////////////////
 
-    override fun onCreate(name: String) {
+    override fun onCreate() {
         savedStateRegistryController.performRestore(null)
-        super.onCreate(name)
+        super.onCreate()
     }
 
-    override fun onDestroy(name: String) {
+    override fun onDestroy() {
         viewModelStore.clear()
-        super.onDestroy(name)
+        super.onDestroy()
     }
 
     //////////////////////////////////////////////////////////////////////////
