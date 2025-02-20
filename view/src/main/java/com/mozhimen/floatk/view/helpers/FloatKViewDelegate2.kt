@@ -67,7 +67,7 @@ class FloatKViewDelegate2 : IFloatKDelegate, IFloatKView<Unit> {
     ////////////////////////////////////////////////////////
 
     init {
-        _floatKOwnerProxy.onCreate(this.NAME)
+        _floatKOwnerProxy.onCreate()
     }
 
     ////////////////////////////////////////////////////////
