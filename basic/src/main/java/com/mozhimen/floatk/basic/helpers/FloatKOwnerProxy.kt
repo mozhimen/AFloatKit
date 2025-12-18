@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
-import com.mozhimen.kotlin.elemk.androidx.lifecycle.LifecycleOwnerProxy
+import com.mozhimen.kotlin.elemk.androidx.lifecycle.impls.LifecycleOwnerProxy
 import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
 
 /**

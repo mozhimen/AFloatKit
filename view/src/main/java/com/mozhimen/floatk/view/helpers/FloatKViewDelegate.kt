@@ -131,8 +131,8 @@ class FloatKViewDelegate : IFloatKDelegate, IFloatKView<Unit> {
         Log.d(TAG, "attach: ")
         container.addViewSafe(_layoutKMagnet!!)
         _layoutKMagnet!!.addAndRemoveOnGlobalLayoutListener {
-            _layoutKMagnet!!.updateSize()
-            _layoutKMagnet!!.moveToEdge()
+            _layoutKMagnet?.updateSize()
+            _layoutKMagnet?.moveToEdge()
         }
     }
 
