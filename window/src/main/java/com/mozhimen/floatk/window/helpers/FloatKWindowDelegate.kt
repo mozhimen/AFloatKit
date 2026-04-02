@@ -26,7 +26,7 @@ import com.mozhimen.floatk.window.commons.IFloatKWindowDragger
 import com.mozhimen.floatk.window.impls.FloatKWindowDaggerCommon
 import com.mozhimen.floatk.window.widgets.LayoutKFrameTouchWindow
 import com.mozhimen.kotlin.elemk.commons.IExt_Listener
-import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
+import com.mozhimen.kotlin.lintk.optins.api.OApiInit_ByLazy
 import com.mozhimen.kotlin.utilk.android.app.getDecorView
 import com.mozhimen.kotlin.utilk.android.app.isFinishingOrDestroyed
 import com.mozhimen.kotlin.utilk.android.util.UtilKLogWrapper
@@ -65,16 +65,16 @@ class FloatKWindowDelegate : IFloatKDelegate, IFloatKWindow<Unit>, BaseUtilK(),
     private var _windowParamsRef: WindowManager.LayoutParams? = null
     private var _layoutKRoot: LayoutKFrameTouchWindow? by Delegates.observable(null) { property, oldValue, newValue ->
         if (newValue != null) {
-            _floatKOwnerProxy.onStart(NAME)
+            _floatKOwnerProxy.onStart()
         } else {
-            _floatKOwnerProxy.onStop(NAME)
+            _floatKOwnerProxy.onStop()
         }
     }
 
     ////////////////////////////////////////////////////////
 
     init {
-        _floatKOwnerProxy.onCreate(this.NAME)
+        _floatKOwnerProxy.onCreate()
     }
 
     ////////////////////////////////////////////////////////

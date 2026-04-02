@@ -4,11 +4,12 @@ import android.app.Activity
 import android.util.Log
 import android.view.WindowManager
 import com.mozhimen.floatk.basic.bases.BaseFloatK
+import com.mozhimen.floatk.basic.commons.IFloatKDelegate
 import com.mozhimen.floatk.window.commons.IFloatKWindowDragger
 import com.mozhimen.floatk.window.global.commons.IFloatKWindowGlobal
 import com.mozhimen.kotlin.elemk.commons.IExt_Listener
-import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
-import com.mozhimen.kotlin.lintk.optins.permission.OPermission_SYSTEM_ALERT_WINDOW
+import com.mozhimen.kotlin.lintk.optins.api.OApiInit_ByLazy
+import com.mozhimen.kotlin.lintk.optins.manifest.uses_permission.OUsesPermission_SYSTEM_ALERT_WINDOW
 import com.mozhimen.kotlin.utilk.wrapper.UtilKPermission
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -19,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  * @Date 2024/10/13 19:40
  * @Version 1.0
  */
-@OptIn(OPermission_SYSTEM_ALERT_WINDOW::class)
+@OptIn(OUsesPermission_SYSTEM_ALERT_WINDOW::class)
 class FloatKWindowGlobal : BaseFloatK<FloatKWindowGlobal>(), IFloatKWindowGlobal<FloatKWindowGlobal> {
     companion object {
         @JvmStatic
@@ -39,7 +40,7 @@ class FloatKWindowGlobal : BaseFloatK<FloatKWindowGlobal>(), IFloatKWindowGlobal
     ///////////////////////////////////////////////////////////////////////////////////
 
     @OptIn(OApiInit_ByLazy::class)
-    override fun getFloatKProxy(): FloatKWindowGlobalProxy {
+    override fun getFloatKDelegate(): IFloatKDelegate {
         return _floatProxy
     }
 

@@ -5,7 +5,7 @@ import android.widget.FrameLayout
 import com.mozhimen.floatk.basic.bases.BaseFloatK
 import com.mozhimen.floatk.view.commons.IFloatKView
 import com.mozhimen.floatk.view.helpers.FloatKViewDelegate
-import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
+import com.mozhimen.kotlin.lintk.optins.api.OApiInit_ByLazy
 
 @SuppressLint("StaticFieldLeak")
 class FloatKView : BaseFloatK<FloatKView>(), IFloatKView<FloatKView> {

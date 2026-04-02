@@ -28,10 +28,10 @@ import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.compositionContext
 import androidx.compose.ui.unit.dp
-import com.mozhimen.floatk.window.FloatKWindowDelegate
 import com.mozhimen.floatk.window.global.FloatKWindowGlobal
-import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
-import com.mozhimen.kotlin.lintk.optins.permission.OPermission_SYSTEM_ALERT_WINDOW
+import com.mozhimen.floatk.window.helpers.FloatKWindowDelegate
+import com.mozhimen.kotlin.lintk.optins.api.OApiInit_ByLazy
+import com.mozhimen.kotlin.lintk.optins.manifest.uses_permission.OUsesPermission_SYSTEM_ALERT_WINDOW
 import com.mozhimen.kotlin.utilk.android.content.startContext
 import com.mozhimen.kotlin.utilk.android.util.dp2px
 import com.mozhimen.kotlin.utilk.android.util.dp2pxI
@@ -50,7 +50,7 @@ class MainActivityWindowGlobal : Activity(), IUtilK {
 
     ///////////////////////////////////////////////////////////////////////
 
-    @OptIn(OPermission_SYSTEM_ALERT_WINDOW::class)
+    @OptIn(OUsesPermission_SYSTEM_ALERT_WINDOW::class)
     fun showSimple(view: View) {
         if (FloatKWindowGlobal.instance.isRegisterActivityLifecycleCallbacks()||!UtilKPermission.hasSystemAlertWindow())
             return
@@ -77,7 +77,7 @@ class MainActivityWindowGlobal : Activity(), IUtilK {
 
     ///////////////////////////////////////////////////////////////////////
 
-    @OptIn(OPermission_SYSTEM_ALERT_WINDOW::class)
+    @OptIn(OUsesPermission_SYSTEM_ALERT_WINDOW::class)
     fun showCompose(view: View) {
         if (FloatKWindowGlobal.instance.isRegisterActivityLifecycleCallbacks()||!UtilKPermission.hasSystemAlertWindow())
             return
@@ -131,7 +131,7 @@ class MainActivityWindowGlobal : Activity(), IUtilK {
     ///////////////////////////////////////////////////////////////////////
 
     //高阶用法, 可以折叠展开成全屏的遮罩悬浮窗, 可设置初始位置
-    @OptIn(OPermission_SYSTEM_ALERT_WINDOW::class)
+    @OptIn(OUsesPermission_SYSTEM_ALERT_WINDOW::class)
     fun showResizeFullScreen(view: View) {
         if (FloatKWindowGlobal.instance.isRegisterActivityLifecycleCallbacks()||!UtilKPermission.hasSystemAlertWindow())
             return

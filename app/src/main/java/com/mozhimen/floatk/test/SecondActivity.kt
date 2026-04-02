@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.mozhimen.bindk.bases.viewbinding.activity.BaseActivityVB
 import com.mozhimen.floatk.test.databinding.ActivitySecondBinding
 import com.mozhimen.floatk.window.FloatKWindow
+import com.mozhimen.uik.databinding.bases.viewbinding.activity.BaseActivityVB
 
 class SecondActivity : BaseActivityVB<ActivitySecondBinding>() {
     fun getAllWindowManagers(view: View) {

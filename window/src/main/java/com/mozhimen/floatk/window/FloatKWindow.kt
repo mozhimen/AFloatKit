@@ -4,12 +4,13 @@ import android.app.Activity
 import android.util.Log
 import android.view.WindowManager
 import com.mozhimen.floatk.basic.bases.BaseFloatK
+import com.mozhimen.floatk.basic.commons.IFloatKDelegate
 import com.mozhimen.floatk.window.commons.IFloatKWindow
 import com.mozhimen.floatk.window.commons.IFloatKWindowDragger
+import com.mozhimen.floatk.window.helpers.FloatKWindowDelegate
 import com.mozhimen.kotlin.elemk.commons.IExt_Listener
-import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
+import com.mozhimen.kotlin.lintk.optins.api.OApiInit_ByLazy
 import java.lang.ref.WeakReference
-
 /**
  * @ClassName FloatKWindow
  * @Description TODO
@@ -40,7 +41,7 @@ class FloatKWindow : BaseFloatK<FloatKWindow>(), IFloatKWindow<FloatKWindow> {
     }
 
     @OptIn(OApiInit_ByLazy::class)
-    override fun getFloatKProxy(): FloatKWindowDelegate {
+    override fun getFloatKDelegate(): IFloatKDelegate {
         return _floatProxy
     }
 

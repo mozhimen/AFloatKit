@@ -19,7 +19,7 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import com.mozhimen.floatk.basic.commons.IFloatKProxy
+import com.mozhimen.floatk.basic.commons.IFloatKDelegate
 import com.mozhimen.floatk.basic.helpers.FloatKOwnerProxy
 import com.mozhimen.floatk.window.commons.IFloatKWindowDragger
 import com.mozhimen.floatk.window.global.commons.IFloatKWindowGlobal
@@ -27,7 +27,7 @@ import com.mozhimen.floatk.window.impls.FloatKWindowDaggerCommon
 import com.mozhimen.floatk.window.widgets.LayoutKFrameTouchWindow
 import com.mozhimen.kotlin.elemk.android.view.cons.CWinMgr
 import com.mozhimen.kotlin.elemk.commons.IExt_Listener
-import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
+import com.mozhimen.kotlin.lintk.optins.api.OApiInit_ByLazy
 import com.mozhimen.kotlin.utilk.android.os.UtilKBuildVersion
 import com.mozhimen.kotlin.utilk.android.util.UtilKLogWrapper
 import com.mozhimen.kotlin.utilk.android.view.UtilKWindowManager
@@ -44,7 +44,7 @@ import kotlin.properties.Delegates
  * @Version 1.0
  */
 @OApiInit_ByLazy
-class FloatKWindowGlobalProxy : IFloatKProxy, IFloatKWindowGlobal<Unit>, BaseUtilK(),
+class FloatKWindowGlobalProxy : IFloatKDelegate, IFloatKWindowGlobal<Unit>, BaseUtilK(),
     LayoutKFrameTouchWindow.OnPositionChangedListener {
     @LayoutRes
     private var _layoutId = 0 //R.layout.en_floating_view;
@@ -63,16 +63,16 @@ class FloatKWindowGlobalProxy : IFloatKProxy, IFloatKWindowGlobal<Unit>, BaseUti
     private val _windowManager: WindowManager by lazy { UtilKWindowManager.get(_context) }
     private var _layoutKRoot: LayoutKFrameTouchWindow? by Delegates.observable(null) { property, oldValue, newValue ->
         if (newValue != null) {
-            _floatKOwnerProxy.onStart(NAME)
+            _floatKOwnerProxy.onStart()
         } else {
-            _floatKOwnerProxy.onStop(NAME)
+            _floatKOwnerProxy.onStop()
         }
     }
 
     ////////////////////////////////////////////////////////
 
     init {
-        _floatKOwnerProxy.onCreate(this.NAME)
+        _floatKOwnerProxy.onCreate()
     }
 
     ////////////////////////////////////////////////////////

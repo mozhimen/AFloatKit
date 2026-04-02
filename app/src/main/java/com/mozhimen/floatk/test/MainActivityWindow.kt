@@ -28,17 +28,17 @@ import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.compositionContext
 import androidx.compose.ui.unit.dp
-import com.mozhimen.bindk.bases.viewbinding.activity.BaseActivityVB
 import com.mozhimen.floatk.test.databinding.ActivityMainBinding
 import com.mozhimen.floatk.window.FloatKWindow
-import com.mozhimen.floatk.window.FloatKWindowDelegate
-import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
+import com.mozhimen.floatk.window.helpers.FloatKWindowDelegate
+import com.mozhimen.kotlin.lintk.optins.api.OApiInit_ByLazy
 import com.mozhimen.kotlin.utilk.android.content.startContext
 import com.mozhimen.kotlin.utilk.android.util.dp2px
 import com.mozhimen.kotlin.utilk.android.util.dp2pxI
 import com.mozhimen.kotlin.utilk.android.widget.showToast
 import com.mozhimen.kotlin.utilk.commons.IUtilK
 import com.mozhimen.kotlin.utilk.wrapper.UtilKScreen
+import com.mozhimen.uik.databinding.bases.viewbinding.activity.BaseActivityVB
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

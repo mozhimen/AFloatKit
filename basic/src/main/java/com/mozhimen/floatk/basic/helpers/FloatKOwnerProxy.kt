@@ -10,7 +10,7 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import com.mozhimen.kotlin.elemk.androidx.lifecycle.impls.LifecycleOwnerProxy
-import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
+import com.mozhimen.kotlin.lintk.optins.api.OApiInit_ByLazy
 
 /**
  * @ClassName SavedStateRegistryOwnerProxy

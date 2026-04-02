@@ -24,7 +24,7 @@ import com.mozhimen.floatk.basic.commons.IFloatKDelegate
 import com.mozhimen.floatk.basic.helpers.FloatKOwnerProxy
 import com.mozhimen.floatk.view.commons.IFloatKView
 import com.mozhimen.kotlin.elemk.commons.IExt_Listener
-import com.mozhimen.kotlin.lintk.optins.OApiInit_ByLazy
+import com.mozhimen.kotlin.lintk.optins.api.OApiInit_ByLazy
 import com.mozhimen.kotlin.utilk.BuildConfig
 import com.mozhimen.kotlin.utilk.android.app.getContentView
 import com.mozhimen.kotlin.utilk.android.view.addAndRemoveOnGlobalLayoutListener
