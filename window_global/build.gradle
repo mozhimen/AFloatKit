@@ -35,11 +35,11 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.mozhimen.KUtilKit:android:0.0.2'
-    implementation project(':AXmlKit:basic')
+    implementation 'com.github.mozhimen.KUtilKit:android:0.0.3'
+    implementation 'com.github.mozhimen.AXmlKit:basic:0.0.1'
     implementation project(project.path.replace(project.name,'')+':basic')
     implementation project(project.path.replace(project.name,'')+':window')
-    implementation project(':AXmlKit:layoutk:magnet')
+    implementation 'com.github.mozhimen.AXmlKit:layoutk-magnet:0.0.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
