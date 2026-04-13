@@ -62,8 +62,8 @@ dependencies {
     implementation project(':window')
     implementation project(':window_global')
 
-    implementation 'com.github.mozhimen.ASwiftKit:composek:2.0.4'
-    implementation 'com.github.mozhimen.ASwiftKit:uik-databinding:2.0.4'
+    implementation 'com.github.mozhimen.ASwiftKit:composek:2.1.6'
+    implementation 'com.github.mozhimen.ASwiftKit:uik-databinding:2.1.6'
     implementation project(':ADslKit:anko')
     implementation project(':AOpenGlKit:basic')
 
