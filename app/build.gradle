@@ -60,12 +60,12 @@ android {
 dependencies {
     implementation project(':view')
     implementation project(':window')
-    implementation project(':window_global')
+    implementation project(':window-global')
 
     implementation 'com.github.mozhimen.ASwiftKit:composek:2.1.6'
     implementation 'com.github.mozhimen.ASwiftKit:uik-databinding:2.1.6'
-    implementation project(':ADslKit:anko')
-    implementation project(':AOpenGlKit:basic')
+    implementation 'com.github.mozhimen.ADslKit:anko:0.0.1'
+    implementation 'com.github.mozhimen:AOpenGLKit:0.0.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

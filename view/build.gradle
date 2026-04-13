@@ -30,13 +30,9 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.mozhimen.ASwiftKit:basick:2.1.6'
+    api project(':basic')
     api 'com.github.mozhimen.AXmlKit:layoutk-magnet:0.0.5'
-    if (rootProject.name=="AFloatKit"){
-        api project(':basic')
-    }else{
-        api project(':AFloatKit:basic')
-    }
+    implementation 'com.github.mozhimen.ASwiftKit:basick:2.1.6'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

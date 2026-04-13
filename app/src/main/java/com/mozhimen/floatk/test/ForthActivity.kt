@@ -10,12 +10,12 @@ import android.opengl.Matrix
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.mozhimen.kotlin.utilk.android.graphics.UtilKBitmapFactory
-import com.mozhimen.openglk.basic.utils.GLES30Util
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+import com.mozhimen.openglk.basic.utils.UtilGLES30
 
 class ForthActivity : AppCompatActivity() {
     private lateinit var _myGLSurfaceView: MyGLSurfaceView
@@ -171,8 +171,8 @@ class Texture(bitmap: Bitmap) {
         _vertexBuffer.position(0)
 
         //创建shader,并为其指定源码
-        val shaderVertex = GLES30Util.loadShader(GLES30.GL_VERTEX_SHADER, _strShaderVertex)
-        val shaderFragment = GLES30Util.loadShader(GLES30.GL_FRAGMENT_SHADER, _strShaderFragment)
+        val shaderVertex = UtilGLES30.loadShader(GLES30.GL_VERTEX_SHADER, _strShaderVertex)
+        val shaderFragment = UtilGLES30.loadShader(GLES30.GL_FRAGMENT_SHADER, _strShaderFragment)
 
         _program = GLES30.glCreateProgram()
         GLES30.glAttachShader(_program, shaderVertex)
